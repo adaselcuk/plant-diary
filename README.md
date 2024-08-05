@@ -6,6 +6,13 @@ I am making an online plant diary to improve my web development experience. I am
 This website will mainly be aimed at home gardeners and plant keepers who need a place where they can keep track of their plant routines and ask for help if their plant is not in the best shape.
 Amateur botanists will especially have an interest in this due to their beginner knowledge of plants.
 
+# TO DO - Styling and Design
+Prototyping of and designing the...
+- [ ] Landing page
+- [ ] Dashboard
+- [ ] Log care activity screen
+- [ ] Sign in/sign up page 
+
 ## TO DO - Core Features
 - [ ] User authentication
 - [ ] Dashboard - overview of all plants that user owns and recent activities (maybe calendar)
