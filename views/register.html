@@ -4,8 +4,27 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Sign In</title>
+	<link rel="stylesheet" href="public/css/style.css">
 </head>
 <body>
-	
+	<div class="container">
+		<div class="left">
+			<h1>Foliage</h1>
+			<p>Your personalized plant-care assistant.</p>
+		</div>
+		<div class="right">
+			<div class="sign-in-container">
+				<h2>Sign In</h2>
+				<p class="sign-in-error">Email does not exist or password is invalid.</p>
+				<form action="/signin" method="post">
+					<input type="email" id="email" name="email" placeholder="Email" required>
+					<input type="password" id="password" name="password" placeholder="Password" required>
+
+					<a href="/forgot-password" class="forgot-password">Forgot password?</a>
+					<button type="submit" class="sign-in-button">Sign In</button>
+				</form>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

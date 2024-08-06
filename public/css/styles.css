@@ -1,0 +1,13 @@
+html {
+	background-color: #3C553C;
+}
+
+#logo {
+	color: #D8D581;
+	font-family: "Krona One";
+	font-size: 40px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	flex-shrink: 0;
+}
