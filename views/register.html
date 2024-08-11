@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register & Login</title>
     <link rel="stylesheet" href="/public/css/styles.css">
-    <script type="module" src="firebaseauth.js"></script>
-</head>
-<body>
-	<div class="container" id="signIn">
+    <script type="module" src="firebase.js"></script>
+  </head>
+  <body>
+	  <div class="container" id="signIn">
         <h1 class="form-title">Sign In</h1>
         <form method="post" action="">
           <div id="signInMessage" class="messageDiv" style="display:none;"></div>
@@ -26,7 +28,7 @@
           <p class="recover">
             <a href="#">Recover Password</a>
           </p>
-         <button  class="btn"  id="submitSignIn">Sign In</button>
+         <button class="btn" id="submitSignIn">Sign In</button>
         </form>
         <div class="icons">
           <i class="fab fa-google"></i>
@@ -73,5 +75,5 @@
       </div>
     </div>
       <script src="script.js"></script>
-</body>
+  </body>
 </html>
