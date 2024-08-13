@@ -2,6 +2,8 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+import {getFirestore, setDoc, doc} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+import dotenv from 'dotenv';
 dotenv.config();
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -21,49 +23,83 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-const auth = getAuth(app);
+
+function showMessage(message, divId) {
+  var messageDiv = document.getElementById(divId);
+  message.style.display = 'block';
+  messageDiv.innerHTML = message;
+  message.style.opacity = 1;
+  setTimeout(function() {
+    message.style.opacity = 0;
+  }, 5000);
+}
 
 // for signing up
-document.getElementById('submitSignUp').addEventListener('click', (e) => {
-  e.preventDefault();
-  const email = document.getElementById('rEmail').value;
-  const password = document.getElementById('rPassword').value;
+const signUp = document.getElementById('submitSignUp');
+  signUp.addEventListener('click', (event) => {
+    event.preventDefault();
+    const email = document.getElementById('rEmail').value;
+    const password = document.getElementById('rPassword').value;
+    const firstName = document.getElementById('fName').value;
+    const lastName = document.getElementById('lName').value;
 
-  createUserWithEmailAndPassword(auth, email, password)
+    const auth = getAuth();
+    const db = getFirestore();
+
+    createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
+      // Signed in 
       const user = userCredential.user;
-      console.log(user);
-      document.getElementById('signUpMessage').innerHTML = 'Registered Successfully!';
-      document.getElementById('signUpMessage').style.display = 'block';
+      const userData = {
+        email: email,
+        firstName: firstName,
+        lastName: lastName
+      };
+      showMessage('Account created successfully', 'signUpMessage');
+      const docRef = doc(db, "users", user.uid);
+      setDoc(docRef, userData)
+      .then(() => {
+        window.location.href = 'index.html'; // DO I HAVE TO HAVE ANOTHER SIGN IN HTML??? - BECAUSE THIS DIRECTS TO MAIN PAGE AGAIN
+      })
+      .catch((error) => {
+        console.error("error writing document", error);
+      });
     })
     .catch((error) => {
-      const errorMessage = error.message;
-      console.log(errorMessage);
-      document.getElementById('signUpMessage').innerHTML = errorMessage;
-      document.getElementById('signUpMessage').style.display = 'block';
-    });
+      const errorCode = error.code;
+      if (errorCode =='auth/email-already-in-use') {
+        showMessage('Email already in use', 'signUpMessage');
+      } else {
+        showMessage('Unable to create user. Please try again', 'signUpMessage');
+      }
+    })
 });
 
 // for signing in
-document.getElementById('submitSignIn').addEventListener('click', (e) => {
-  e.preventDefault();
+const signIn = document.getElementById('submitSignIn');
+signIn.addEventListener('click', (event) => {
+  event.preventDefault();
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
+  const auth = getAuth();
 
   signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log(user);
-      document.getElementById('signInMessage').innerHTML = 'Logged In Successfully!';
-      document.getElementById('signInMessage').style.display = 'block';
-    })
-    .catch((error) => {
-      const errorMessage = error.message;
-      console.log(errorMessage);
-      document.getElementById('signInMessage').innerHTML = errorMessage;
-      document.getElementById('signInMessage').style.display = 'block';
-    });
-});
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    showMessage('Signed in successfully', 'signInMessage');
+    localStorage.setItem('loggedInUserId', user.uid);
+    window.location.href = 'dashboard.html';
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    if (errorCode === 'auth/invalid-credential') {
+      showMessage('Incorrect Email or Password', 'signInMessage');
+    } else {
+      showMessage('Unable to sign in. Please try again', 'signInMessage');
+    }
+  })
+})
 
 export { auth };
 
