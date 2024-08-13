@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 import {getFirestore, setDoc, doc} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 import dotenv from 'dotenv';
 dotenv.config();
@@ -59,7 +59,11 @@ const signUp = document.getElementById('submitSignUp');
       const docRef = doc(db, "users", user.uid);
       setDoc(docRef, userData)
       .then(() => {
-        window.location.href = 'index.html'; // DO I HAVE TO HAVE ANOTHER SIGN IN HTML??? - BECAUSE THIS DIRECTS TO MAIN PAGE AGAIN
+        sendEmailVerification(user)
+        .then(() => {
+          showMessage('Verification email sent. Please check your email.', 'signUpMessage');
+          window.location.href = 'register.html';
+        })
       })
       .catch((error) => {
         console.error("error writing document", error);
@@ -87,9 +91,14 @@ signIn.addEventListener('click', (event) => {
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
-    showMessage('Signed in successfully', 'signInMessage');
-    localStorage.setItem('loggedInUserId', user.uid);
-    window.location.href = 'dashboard.html';
+    if (user.emailVerified) {
+      showMessage('Signed in successfully', 'signInMessage');
+      localStorage.setItem('loggedInUserId', user.uid);
+      window.location.href = 'dashboard.html';
+    } else {
+      showMessage('Please verify your email before signing in.', 'signInMessage');
+      auth.signOut();
+    }
   })
   .catch((error) => {
     const errorCode = error.code;
