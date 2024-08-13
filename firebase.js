@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 import {getFirestore, setDoc, doc} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 import dotenv from 'dotenv';
 dotenv.config();
@@ -109,6 +109,36 @@ signIn.addEventListener('click', (event) => {
     }
   })
 })
+
+const recoverPasswordLink = document.getElementById('recoverPasswordLink');
+recoverPasswordLink.addEventListener('click', (event) => {
+  event.preventDefault();
+  document.getElementById('signIn').style.display = 'none';
+  document.getElementById('recoverPassword').style.display = 'block';
+});
+
+const submitRecover = document.getElementById('submitRecover');
+submitRecover.addEventListener('click', (event) => {
+  event.preventDefault();
+  const email = document.getElementById('recoverEmail').value;
+  const auth = getAuth();
+
+  sendPasswordResetEmail(auth, email)
+  .then(() => {
+    showMessage('Password recovery email sent. Please check your email.', 'recoverMessage');
+  })
+  .catch((error) => {
+    console.error("Error during password recovery", error);
+    showMessage('Unable to send recovery email. Please try again', 'recoverMessage');
+  });
+});
+
+const backToSignInButton = document.getElementById('backToSignInButton');
+backToSignInButton.addEventListener('click', (event) => {
+  event.preventDefault();
+  document.getElementById('signIn').style.display = 'block';
+  document.getElementById('recoverPassword').style.display = 'none';
+});
 
 export { auth };
 

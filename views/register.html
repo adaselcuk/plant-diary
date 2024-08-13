@@ -26,7 +26,7 @@
               <label for="password">Password</label>
           </div>
           <p class="recover">
-            <a href="#">Recover Password</a>
+            <button id="recoverPasswordLink">Recover Password</button>
           </p>
          <button class="btn" id="submitSignIn">Sign In</button>
         </form>
@@ -66,12 +66,28 @@
        <button class="btn" id="submitSignUp" >Sign Up</button>
       </form>
       <div class="icons">
-        <i class="fab fa-google"></i>
-        <i class="fab fa-facebook"></i>
+        <i class="fab fa-google" id="googleSignIn"></i>
+        <i class="fab fa-facebook" id="facebookSignIn"></i>
       </div>
       <div class="links">
         <p>Already Have Account ?</p>
         <button id="signInButton">Sign In</button>
+      </div>
+    </div>
+    <div class="container" id="recoverPassword" style="display:none;">
+      <h1 class="form-title">Recover Password</h1>
+      <form method="post" action="">
+        <div id="recoverPasswordMessage" class="messageDiv" style="display:none;"></div>
+        <div class="input-group">
+            <i class="fas fa-envelope"></i>
+            <input type="email"  id="recoverEmail" placeholder="Email" required>
+            <label for="recoverEmail">Email</label>
+        </div>
+       <button class="btn" id="submitRecoverPassword">Send Recovery Email</button>
+      </form>
+      <div class="links">
+        <p>Remembered Password ?</p>
+        <button id="backToSignIn">Sign In</button>
       </div>
     </div>
       <script src="script.js"></script>
