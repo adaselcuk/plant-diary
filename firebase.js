@@ -34,6 +34,23 @@ function showMessage(message, divId) {
   }, 5000);
 }
 
+document.getElementById('signUpButton').addEventListener('click', (event) => {
+  document.getElementById('signIn').style.display = 'none';
+  document.getElementById('signUp').style.display = 'block';
+});
+
+document.getElementById('signInButton').addEventListener('click', (event) => {
+  document.getElementById('signIn').style.display = 'block';
+  document.getElementById('signUp').style.display = 'none';
+});
+
+const recoverPasswordLink = document.getElementById('recoverPasswordLink');
+recoverPasswordLink.addEventListener('click', (event) => {
+  event.preventDefault();
+  document.getElementById('signIn').style.display = 'none';
+  document.getElementById('recoverPassword').style.display = 'block';
+});
+
 // for signing up
 const signUp = document.getElementById('submitSignUp');
   signUp.addEventListener('click', (event) => {
@@ -110,12 +127,6 @@ signIn.addEventListener('click', (event) => {
   })
 })
 
-const recoverPasswordLink = document.getElementById('recoverPasswordLink');
-recoverPasswordLink.addEventListener('click', (event) => {
-  event.preventDefault();
-  document.getElementById('signIn').style.display = 'none';
-  document.getElementById('recoverPassword').style.display = 'block';
-});
 
 const submitRecover = document.getElementById('submitRecover');
 submitRecover.addEventListener('click', (event) => {
