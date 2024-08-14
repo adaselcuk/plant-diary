@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 import {getFirestore, setDoc, doc} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+import { showMessage } from "./public/js/register.js";
 import dotenv from 'dotenv';
 dotenv.config();
 // TODO: Add SDKs for Firebase products that you want to use
@@ -23,33 +24,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-
-function showMessage(message, divId) {
-  var messageDiv = document.getElementById(divId);
-  message.style.display = 'block';
-  messageDiv.innerHTML = message;
-  message.style.opacity = 1;
-  setTimeout(function() {
-    message.style.opacity = 0;
-  }, 5000);
-}
-
-document.getElementById('signUpButton').addEventListener('click', (event) => {
-  document.getElementById('signIn').style.display = 'none';
-  document.getElementById('signUp').style.display = 'block';
-});
-
-document.getElementById('signInButton').addEventListener('click', (event) => {
-  document.getElementById('signIn').style.display = 'block';
-  document.getElementById('signUp').style.display = 'none';
-});
-
-const recoverPasswordLink = document.getElementById('recoverPasswordLink');
-recoverPasswordLink.addEventListener('click', (event) => {
-  event.preventDefault();
-  document.getElementById('signIn').style.display = 'none';
-  document.getElementById('recoverPassword').style.display = 'block';
-});
 
 // for signing up
 const signUp = document.getElementById('submitSignUp');
@@ -144,13 +118,7 @@ submitRecover.addEventListener('click', (event) => {
   });
 });
 
-const backToSignInButton = document.getElementById('backToSignInButton');
-backToSignInButton.addEventListener('click', (event) => {
-  event.preventDefault();
-  document.getElementById('signIn').style.display = 'block';
-  document.getElementById('recoverPassword').style.display = 'none';
-});
 
-export { auth };
+export { auth, createUserWithEmailAndPassword };
 
 export default app;
